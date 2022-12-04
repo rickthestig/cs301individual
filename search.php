@@ -16,13 +16,13 @@
     ?>
 <html lang="en">                        
     <head>      
-        <title>bruh</title>
+        <title>Search Results</title>
     <body>
         <h1>Books</h1>
         <?php
-        if ($column == "books"){ 
-            $sqlbook = $conn->prepare("SELECT Books.Title, Author.Author from Books LEFT JOIN BookAuthor on Books.BID=BookAuthor.BID LEFT JOIN Author on BookAuthor.AID=Author.AID where Books.Title like '%$search%'");
-            /* $sqlbook->bindParam("s",$search); */
+        if ($column == "Books"){ 
+            $sqlbook = $conn->prepare("SELECT Books.Title, Author.Author, BookLocation.PID, BookLocation.SID from Books LEFT JOIN BookAuthor on Books.BID=BookAuthor.BID LEFT JOIN Author on BookAuthor.AID=Author.AID RIGHT JOIN BookLocation ON Books.BID=BookLocation.BID where Books.Title like '%$search%'");
+            /* $sqlbook->bindParam("s","%" . $search . "%"); */
             $sqlbook->execute();
             $result = $sqlbook->get_result();
             $sqlbook->close();
@@ -31,15 +31,17 @@
                 "<tr>
                     <th>Book Title</th>
                     <th>Author</th>
+                    <th>Position on Shelf (0 front, 1 back)</th>
+                    <th>Shelf Number</th>
                 </tr>";
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $row["Title"] . "</td><td>" . $row["Author"];
+                    echo "<tr><td>" . $row["Title"] . "</td><td>" . $row["Author"] . "</td><td>" . $row["PID"] . "</td><td>" . $row["SID"];
                     echo "</td></tr>\n";
                 }
                 echo "</table>";
         }
         else{
-            $sqlbook = $conn->prepare("SELECT Books.Title, Author.Author from Books LEFT JOIN BookAuthor on Books.BID=BookAuthor.BID LEFT JOIN Author on BookAuthor.AID=Author.AID where Author.Author like '%$search%'");
+            $sqlbook = $conn->prepare("SELECT Books.Title, Author.Author, BookLocation.PID, BookLocation.SID from Books LEFT JOIN BookAuthor on Books.BID=BookAuthor.BID LEFT JOIN Author on BookAuthor.AID=Author.AID RIGHT JOIN BookLocation ON Books.BID=BookLocation.BID where Author.Author like '%$search%'");
             /* $sqlbook->bindParam("s",$search); */
             $sqlbook->execute();
             $result = $sqlbook->get_result();
@@ -49,9 +51,11 @@
                 "<tr>
                     <th>Book Title</th>
                     <th>Author</th>
+                    <th>Position on Shelf (0 front, 1 back)</th>
+                    <th>Shelf Number</th>
                 </tr>";
                 while ($row = $result->fetch_assoc()) {
-                    echo "<tr><td>" . $row["Title"] . "</td><td>" . $row["Author"];
+                    echo "<tr><td>" . $row["Title"] . "</td><td>" . $row["Author"]  . "</td><td>" . $row["PID"] . "</td><td>" . $row["SID"];
                     echo "</td></tr>\n";
                 }
                 echo "</table>";

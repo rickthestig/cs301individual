@@ -4,6 +4,7 @@
 
 </head>
 <body>
+    <link href="addtest.php">Add Book</link>
     <form action="search.php" method="post">
         Search <input type="text" id="thesearch" name="thesearch"><br>
         Column: <select name="column">
@@ -12,10 +13,5 @@
             </select><br>
         <input type="submit">
     </form>
-    <?php
-        if (isset($_REQUEST['thesearch'])) {
-            echo "test";
-        }
-    ?>
 </body>
 </html>
